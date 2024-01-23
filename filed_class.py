@@ -1,61 +1,73 @@
-empty_cell_vertical_line_template = f"{' ' * 6}|"
+from helpers.info_messages import ENTER_CORRECT_COORDS_MESSAGE, CELL_IS_OCCUPIED_MESSAGE
+from helpers.variables import empty_field_vertical_line_template, \
+    filled_field_vertical_line_template, \
+    percent_nums_data, \
+    X_SYMBOL, \
+    O_SYMBOL
 
 
 class Field:
-    percent_nums_data = {3: 50, 4: 50, 5: 45, 6: 40, 7: 32, 8: 30, 9: 26, 10: 24}
-
     def __init__(self, size):
         self.size = size
-        self.last_col = self.size - 1
-        self.percent_of_size_num = self.percent_nums_data.get(self.size)
-        self.horizontal_lines_count = self.calculate_horizontal_lines_count(size=self.size,
-                                                                            percent=self.percent_of_size_num)
-        self.field = self.create_game_field()
+        self.last_col = size - 1
+        self.percent_of_size_num = percent_nums_data.get(size)
+        self.horizontal_lines_count = round(size + (size * (size * self.percent_of_size_num / 100)))
+        self.field = None
+        self.filled_cells = {X_SYMBOL: [], O_SYMBOL: [[1, 1], [0, 2]]}
+
+
+    def add_user_coords(self, symbol: str, coords: list) -> str or None:
+        user_coords = [int(data) for data in coords if data.isdigit()]
+        if len(user_coords) != 2:
+            return ENTER_CORRECT_COORDS_MESSAGE
+        elif user_coords not in self.filled_cells.get(X_SYMBOL) and user_coords not in self.filled_cells.get(O_SYMBOL):
+            self.fixate_user_coords(symbol=symbol, coords=user_coords)
+        else:
+            return CELL_IS_OCCUPIED_MESSAGE
+
+    def fixate_user_coords(self, symbol: str, coords: list) -> None:
+        user_symbol_filled_cells = self.filled_cells.get(symbol)
+        user_symbol_filled_cells.append(coords)
+        self.filled_cells[symbol] = user_symbol_filled_cells
+
+
+    def create_field(self, symbol=None) -> None:
+        header_text, horizontal_text = '', ''
+        for header_num in range(0, self.size):
+            header_text += self.create_header(col_number=header_num)
+            vertical_lines = self.create_vertical_lines(symbol=symbol, row_num=header_num)
+            horizontal_lines = self.create_horizontal_lines(row_num=header_num)
+            vertical_and_horizontal_lines = f"{vertical_lines}\n{' ' * 3}{horizontal_lines}\n"
+            horizontal_text += f"{header_num}{vertical_and_horizontal_lines}"
+        self.field = f"{header_text}\n{horizontal_text}"
 
     @staticmethod
-    def calculate_horizontal_lines_count(size, percent):
-        count = size + (size * (size * percent / 100))
-        return round(count)
+    def create_header(col_number):
+        header_indentation_num = 5 if col_number < 3 else 6
+        return f"{' ' * header_indentation_num}{col_number}"
 
-    def create_game_field(self):
-        header_text = ''
-        horizontal_text = ''
-        for header_num in range(0, self.size):
-            header_indentation_num = 5 if header_num < 3 else 6
-            header_text += f"{' ' * header_indentation_num}{header_num}"
-            vertical_lines = self.create_vertical_lines()
-            horizontal_lines_count = 0 if header_num == (self.size - 1) else self.horizontal_lines_count
-            lines = f"{vertical_lines}\n{' ' * 3}{'--' * horizontal_lines_count}\n"
-            horizontal_text += f"{header_num}{lines}"
-        return f"{header_text}\n{horizontal_text}"
-
-    def create_vertical_lines(self):
-        horizontal_lines = ''
+    def create_vertical_lines(self, symbol, row_num) -> str:
+        vertical_lines = ''
         for col in range(0, self.size):
-            horizontal_lines += empty_cell_vertical_line_template if col != self.last_col else ""
-        return horizontal_lines
+            for coords_data in self.filled_cells.get(symbol, []):
+                if coords_data == [col, row_num]:
+                    vertical_lines += self.get_vertical_line(col=col, last_col=self.last_col, symbol=symbol)
+                    break
+            else:
+                vertical_lines += self.get_vertical_line(col=col, last_col=self.last_col)
+        return vertical_lines
+
+    @staticmethod
+    def get_vertical_line(col: int, last_col: int, symbol=None) -> str:
+        if symbol:
+            return filled_field_vertical_line_template % symbol if col == last_col \
+                else f"{filled_field_vertical_line_template % symbol}|"
+        else:
+            return empty_field_vertical_line_template if col != last_col else ""
+
+    def create_horizontal_lines(self, row_num: int) -> str:
+        horizontal_lines_count = 0 if row_num == (self.size - 1) else self.horizontal_lines_count
+        return '--' * horizontal_lines_count
 
     def __str__(self):
         print(self.field)
-
-
-def user_input(message=""):
-    while True:
-        user_choice = input(f"{message}: \n")
-        try:
-            user_choice = int(user_choice)
-            if user_choice < 3 or user_choice > 10:
-                message = "Enter correct value"
-                continue
-        except ValueError:
-            message = "Enter only integers"
-            continue
-        else:
-            break
-    return user_choice
-
-
-if __name__ == "__main__":
-    field_size = user_input(message="Enter size of filed")
-    game = Field(size=field_size)
-    game.__str__()
