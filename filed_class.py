@@ -13,7 +13,7 @@ class Field:
         self.percent_of_size_num = percent_nums_data.get(size)
         self.horizontal_lines_count = round(size + (size * (size * self.percent_of_size_num / 100)))
         self.field = None
-        self.filled_cells = {X_SYMBOL: [], O_SYMBOL: [[1, 1], [0, 2]]}
+        self.filled_cells = {X_SYMBOL: [], O_SYMBOL: []}
 
 
     def add_user_coords(self, symbol: str, coords: list) -> str or None:
