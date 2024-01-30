@@ -1,5 +1,7 @@
 from filed_class import Field
-from helpers.info_messages import ENTER_COORDS_MESSAGE, CHOOSE_SYMBOL_MESSAGE, CHOOSE_CORRECT_SYMBOL_MESSAGE, \
+from helpers.info_messages import ENTER_COORDS_MESSAGE, \
+    CHOOSE_SYMBOL_MESSAGE, \
+    CHOOSE_CORRECT_SYMBOL_MESSAGE, \
     SYMBOL_IS_OCCUPIED_MESSAGE
 from helpers.variables import X_SYMBOL, O_SYMBOL
 
@@ -9,15 +11,30 @@ class Player:
         self.field = filed_obj
         self.symbol = None
 
-    def choose_symbol(self) -> None:
+    def choose_symbol(self, bot=False) -> None:
+        if not bot:
+            self.user_choose_symbol()
+        else:
+            self.add_bot_symbol()
+
+    def user_choose_symbol(self):
         message = CHOOSE_SYMBOL_MESSAGE
         while True:
             symbol = input(message)
             if symbol == X_SYMBOL or symbol == O_SYMBOL:
-                self.symbol = symbol
-                break
+                if self.field.free_symbol_controller.get(symbol):
+                    self.symbol = symbol
+                    self.field.free_symbol_controller[symbol] = False
+                    break
+                else:
+                    message = SYMBOL_IS_OCCUPIED_MESSAGE
+                    continue
             message = CHOOSE_CORRECT_SYMBOL_MESSAGE
             continue
+
+    def add_bot_symbol(self):
+        free_symbol = [symbol for symbol, bool_val in self.field.free_symbol_controller.items() if bool_val is True]
+        self.symbol = free_symbol[0]
 
     def step(self) -> None:
         message = ENTER_COORDS_MESSAGE
