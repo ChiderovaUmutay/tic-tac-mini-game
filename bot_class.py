@@ -11,7 +11,7 @@ class Bot(Player):
             coords = self.get_bot_coords(last_col_num=last_col)
             result = self.field.add_user_coords(symbol=self.symbol, coords=coords)
             if not isinstance(result, str):
-                self.field.create_field(symbol=self.symbol)
+                self.field.create_field()
                 self.display(coords=coords)
                 self.field.__str__()
                 break

@@ -45,6 +45,6 @@ class Player:
                 message = result
                 continue
             else:
-                self.field.create_field(symbol=self.symbol)
+                self.field.create_field()
                 self.field.__str__()
                 break
