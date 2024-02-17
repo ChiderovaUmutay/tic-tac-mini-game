@@ -56,7 +56,7 @@ class Field:
                 vertical_lines += self.get_vertical_line(col=col, last_col=self.last_col)
         return vertical_lines
 
-    def get_filled_cells(self):
+    def get_filled_cells(self) -> list:
         filled_cells = [coords for coords in self.filled_cells.values()]
         return filled_cells
 
