@@ -17,13 +17,13 @@ class Checker:
         for key, coords_lists in winning_combinations.items():
             for c_index, coords in enumerate(coords_lists):
                 if (key != "diagonally") or (key == "diagonally" and c_index == 0):
-                    for i in range(1, self.combine_length + 1):
+                    for _ in range(self.combine_length):
                         new_coords = self.get_new_coords(line=key, last_coords_data=coords[-1])
                         coords.append(new_coords)
                 else:
                     coords = self.increase_coords_first_value(coords=coords)
                     self.add_new_coords_to_right_diagonally_data(coords=coords)
-            for i in range(self.combine_length):
+            for _ in range(self.combine_length):
                 new_coords_data = self.add_new_coords_data(line=key, coords=coords_lists[-1])
                 coords_lists.append(new_coords_data) if new_coords_data else None
         return winning_combinations
