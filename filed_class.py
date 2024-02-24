@@ -20,8 +20,9 @@ class Field:
         user_coords = [int(data) for data in coords if data.isdigit()]
         if len(user_coords) != 2:
             return ENTER_CORRECT_COORDS_MESSAGE
-        user_coords += symbol
-        if user_coords not in self.filled_cells.get(X_SYMBOL) and user_coords not in self.filled_cells.get(O_SYMBOL):
+        filled_cells_list = [value[0:2] for values in self.filled_cells.values() for value in values]
+        if user_coords not in filled_cells_list:
+            user_coords += symbol
             self.fixate_user_coords(symbol=symbol, coords=user_coords)
         else:
             return CELL_IS_OCCUPIED_MESSAGE
@@ -57,7 +58,7 @@ class Field:
         return vertical_lines
 
     def get_filled_cells(self) -> list:
-        filled_cells = [coords for coords in self.filled_cells.values()]
+        filled_cells = [coord_data for coords_list in self.filled_cells.values() for coord_data in coords_list]
         return filled_cells
 
     @staticmethod
