@@ -42,8 +42,12 @@ class Checker:
 
     def add_new_coords_to_right_diagonally_data(self, coords: list) -> None:
         for i in list(reversed(range(self.combine_length))):
-            data = coords[i]
-            new_coords_data = [data[1], data[0]]
+            try:
+                data = coords[i]
+                new_coords_data = [data[1], data[0]]
+            except IndexError:
+                data = coords[-1]
+                new_coords_data = [data[0] - 1 , data[1] + 1]
             coords.append(new_coords_data)
 
     @staticmethod
