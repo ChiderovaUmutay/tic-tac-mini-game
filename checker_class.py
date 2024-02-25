@@ -1,3 +1,5 @@
+import math
+
 from filed_class import Field
 from helpers.variables import winning_combinations
 
@@ -26,6 +28,8 @@ class Checker:
             for _ in range(self.combine_length):
                 new_coords_data = self.add_new_coords_data(line=key, coords=coords_lists[-1])
                 coords_lists.append(new_coords_data) if new_coords_data else None
+            if key == "diagonally" and self.field.size > 5:
+                new_right_coords = self.add_right_diagonally_new_coords(coords_data=coords_lists[0])
         return winning_combinations
 
     @staticmethod
@@ -47,7 +51,7 @@ class Checker:
                 new_coords_data = [data[1], data[0]]
             except IndexError:
                 data = coords[-1]
-                new_coords_data = [data[0] - 1 , data[1] + 1]
+                new_coords_data = [data[0] - 1, data[1] + 1]
             coords.append(new_coords_data)
 
     @staticmethod
@@ -59,3 +63,15 @@ class Checker:
             elif line == "horizontal":
                 new_data.append(([data[0], data[1] + 1]))
         return new_data
+
+    def add_right_diagonally_new_coords(self, coords_data):
+        winning_combinations_qty = self.field.size - 5
+        upper_coords = [coords_data]
+        lower_coords = [coords_data]
+        for index in range(winning_combinations_qty):
+            up = [[data[0] + 1, data[1]] for data in upper_coords[index][:-1]]
+            low = [[data[0], data[1] + 1] for data in lower_coords[index][:-1]]
+            upper_coords.append(up)
+            lower_coords.append(low)
+        new_coords = upper_coords[1:] + lower_coords[1:]
+        return new_coords
