@@ -1,7 +1,7 @@
-import math
-
 from filed_class import Field
-from helpers.variables import winning_combinations
+from helpers.variables import (winning_combinations,
+                               DEFAULT_LEN_OF_WINNING_COORDS,
+                               MIN_LEN_DIAGONAL_WINNING_COMBINATIONS_LIST)
 
 
 class Checker:
@@ -12,7 +12,7 @@ class Checker:
 
     def get_winning_combination(self):
         if self.field.size > 3:
-            self.combine_length = self.field.size - 3
+            self.combine_length = self.field.size - DEFAULT_LEN_OF_WINNING_COORDS
             self.winning_combinations = self.calculate_winning_combinations()
 
     def calculate_winning_combinations(self) -> dict:
@@ -65,7 +65,7 @@ class Checker:
         return new_data
 
     def add_right_diagonally_new_coords(self, coords_data):
-        winning_combinations_qty = self.field.size - 5
+        winning_combinations_qty = self.field.size - MIN_LEN_DIAGONAL_WINNING_COMBINATIONS_LIST
         upper_coords = [coords_data]
         lower_coords = [coords_data]
         for index in range(winning_combinations_qty):

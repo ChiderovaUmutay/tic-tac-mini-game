@@ -11,3 +11,6 @@ winning_combinations = {
     "horizontal": [[[0, 0], [1, 0], [2, 0]], [[0, 1], [1, 1], [2, 1]], [[0, 2], [1, 2], [2, 2]]],
     "diagonally": [[[0, 0], [1, 1], [2, 2]], [[2, 0], [1, 1], [0, 2]]]
 }
+
+DEFAULT_LEN_OF_WINNING_COORDS = 3
+MIN_LEN_DIAGONAL_WINNING_COMBINATIONS_LIST = 5
