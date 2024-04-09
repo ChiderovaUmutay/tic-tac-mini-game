@@ -13,9 +13,9 @@ class Checker:
     def get_winning_combination(self):
         if self.field.size > 3:
             self.combine_length = self.field.size - DEFAULT_LEN_OF_WINNING_COORDS
-            self.winning_combinations = self.calculate_winning_combinations()
+            self.calculate_winning_combinations()
 
-    def calculate_winning_combinations(self) -> dict:
+    def calculate_winning_combinations(self):
         for key, coords_lists in winning_combinations.items():
             for c_index, coords in enumerate(coords_lists):
                 if (key != "diagonally") or (key == "diagonally" and c_index == 0):
@@ -24,13 +24,13 @@ class Checker:
                         coords.append(new_coords)
                 else:
                     coords = self.increase_coords_first_value(coords=coords)
-                    self.add_new_coords_to_right_diagonally_data(coords=coords)
+                    self.add_right_diagonally_new_coords(coords=coords)
             for _ in range(self.combine_length):
                 new_coords_data = self.add_new_coords_data(line=key, coords=coords_lists[-1])
                 coords_lists.append(new_coords_data) if new_coords_data else None
             if key == "diagonally" and self.field.size > 5:
-                new_right_coords = self.add_right_diagonally_new_coords(coords_data=coords_lists[0])
-        return winning_combinations
+                self.add_diagonals_new_coords(coords_data=coords_lists[0])
+        self.winning_combinations = winning_combinations
 
     @staticmethod
     def get_new_coords(line: str, last_coords_data: list) -> list:
@@ -44,7 +44,7 @@ class Checker:
             coords[d_index] = [data[0] + self.combine_length, data[1]]
         return coords
 
-    def add_new_coords_to_right_diagonally_data(self, coords: list) -> None:
+    def add_right_diagonally_new_coords(self, coords: list) -> None:
         for i in list(reversed(range(self.combine_length))):
             try:
                 data = coords[i]
@@ -64,7 +64,7 @@ class Checker:
                 new_data.append(([data[0], data[1] + 1]))
         return new_data
 
-    def add_right_diagonally_new_coords(self, coords_data):
+    def add_diagonals_new_coords(self, coords_data):
         winning_combinations_qty = self.field.size - MIN_LEN_DIAGONAL_WINNING_COMBINATIONS_LIST
         upper_coords = [coords_data]
         lower_coords = [coords_data]
