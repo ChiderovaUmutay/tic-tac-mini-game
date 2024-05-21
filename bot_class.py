@@ -1,5 +1,6 @@
 from random import randint
 
+from checker_class import Checker
 from filed_class import Field
 from helpers.info_messages import ENTER_FIELD_SIZE_MESSAGE
 from helpers.secondary_functions import user_input
@@ -37,7 +38,18 @@ if __name__ == "__main__":
     field.__str__()
     player = Player(filed_obj=field)
     player.choose_symbol()
-    player.step()
     bot = Bot(filed_obj=field)
     bot.choose_symbol(bot=True)
-    bot.step()
+    checker = Checker(field)
+    checker.get_winning_combination()
+    while True:
+        player.step()
+        result = checker.checker(player=player)
+        if result:
+            print("User win")
+            break
+        bot.step()
+        result = checker.checker(player=bot)
+        if result:
+            print("Bot win")
+            break
