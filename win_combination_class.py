@@ -29,12 +29,10 @@ class WinningCombinationClass:
                 new_coords_data = self.add_new_coords_data(line=key, coords=coords_lists[-1])
                 coords_lists.append(new_coords_data) if new_coords_data else None
             if key == "diagonally" and self.field.size > 5:
-                new_left_coords, new_right_coords = self.add_diagonals_new_coords(coords_data=coords_lists)
-                if new_left_coords and new_right_coords:
-                    coords_lists.append(new_left_coords)
-                    coords_lists.append(new_right_coords)
+                new_diagonal_coords = self.add_diagonal_new_coords(coords_data=coords_lists)
+                for coords in new_diagonal_coords:
+                    coords_lists.append(coords)
         self.winning_combinations = winning_combinations
-
     @staticmethod
     def get_new_coords(line: str, last_coords_data: list) -> list:
         new_coords_data = {"vertical": [last_coords_data[0], last_coords_data[1] + 1],
@@ -67,7 +65,7 @@ class WinningCombinationClass:
                 new_data.append(([data[0], data[1] + 1]))
         return new_data
 
-    def add_diagonals_new_coords(self, coords_data: list) -> (list, list):
+    def add_diagonal_new_coords(self, coords_data: list) -> (list, list):
         winning_combinations_qty = self.field.size - MIN_LEN_DIAGONAL_WINNING_COMBINATIONS_LIST
         new_left_coords = self.create_new_diagonals_combinations(up_num=1,
                                                                  low_num=1,
@@ -77,7 +75,7 @@ class WinningCombinationClass:
                                                                  low_num=1,
                                                                  coords_data=coords_data[1],
                                                                  combinations_qty=winning_combinations_qty)
-        return new_left_coords, new_right_coords
+        return new_left_coords + new_right_coords
 
     @staticmethod
     def create_new_diagonals_combinations(up_num: int, low_num: int, coords_data: list, combinations_qty: int) -> list:
