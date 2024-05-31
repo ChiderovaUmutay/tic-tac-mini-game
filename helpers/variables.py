@@ -6,6 +6,10 @@ filled_field_vertical_line_template = f"{' ' * 3}%s{' ' * 2}"
 X_SYMBOL = "X"
 O_SYMBOL = "0"
 
+BOT_NAME = "BOT"
+
+YES_WORD = "yes"
+
 winning_combinations = {
     "vertical": [[[0, 0], [0, 1], [0, 2]], [[1, 0], [1, 1], [1, 2]], [[2, 0], [2, 1], [2, 2]]],
     "horizontal": [[[0, 0], [1, 0], [2, 0]], [[0, 1], [1, 1], [2, 1]], [[0, 2], [1, 2], [2, 2]]],
