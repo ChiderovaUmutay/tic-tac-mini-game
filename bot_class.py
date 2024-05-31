@@ -5,7 +5,7 @@ from player_class import Player
 
 class Bot(Player):
 
-    def step(self):
+    def step(self) -> None:
         last_col = self.field.last_col
         while True:
             coords = self.get_bot_coords(last_col_num=last_col)
