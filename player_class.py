@@ -11,10 +11,10 @@ class Player:
     symbol = None
     name = None
 
-    def __init__(self, filed_obj: Field):
+    def __init__(self, filed_obj: Field) -> None:
         self.field = filed_obj
 
-    def create_name(self, bot=False):
+    def create_name(self, bot=False) -> None:
         self.name = input(ENTER_YOUR_NAME) if not bot else BOT_NAME
 
     def choose_symbol(self, bot=False) -> None:
@@ -23,7 +23,7 @@ class Player:
         else:
             self.add_bot_symbol()
 
-    def user_choose_symbol(self):
+    def user_choose_symbol(self) -> None:
         message = CHOOSE_SYMBOL_MESSAGE
         while True:
             symbol = input(message)
@@ -38,7 +38,7 @@ class Player:
             message = CHOOSE_CORRECT_SYMBOL_MESSAGE
             continue
 
-    def add_bot_symbol(self):
+    def add_bot_symbol(self) -> None:
         free_symbol = [symbol for symbol, bool_val in self.field.free_symbol_controller.items() if bool_val is True]
         self.symbol = free_symbol[0]
 
