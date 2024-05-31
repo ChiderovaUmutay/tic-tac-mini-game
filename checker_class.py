@@ -4,7 +4,7 @@ from win_combination_class import WinningCombinationClass
 
 class Checker(WinningCombinationClass):
 
-    def checker(self, player: Player):
+    def checker(self, player: Player) -> None or bool:
         player_combinations = self.field.filled_cells.get(player.symbol)
         cleaned_combinations = [data[0:2] for data in player_combinations]
         for combinations in self.winning_combinations.values():
