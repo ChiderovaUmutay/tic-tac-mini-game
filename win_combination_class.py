@@ -5,17 +5,18 @@ from helpers.variables import (winning_combinations,
 
 
 class WinningCombinationClass:
-    def __init__(self, filed: Field):
-        self.field = filed
-        self.combine_length = 0
-        self.winning_combinations = winning_combinations
+    combine_length = 0
+    winning_combinations = winning_combinations
 
-    def get_winning_combination(self):
+    def __init__(self, filed: Field) -> None:
+        self.field = filed
+
+    def get_winning_combination(self) -> None:
         if self.field.size > 3:
             self.combine_length = self.field.size - DEFAULT_LEN_OF_WINNING_COORDS
             self.calculate_winning_combinations()
 
-    def calculate_winning_combinations(self):
+    def calculate_winning_combinations(self) -> None:
         for key, coords_lists in winning_combinations.items():
             for c_index, coords in enumerate(coords_lists):
                 if (key != "diagonally") or (key == "diagonally" and c_index == 0):
@@ -33,6 +34,7 @@ class WinningCombinationClass:
                 for coords in new_diagonal_coords:
                     coords_lists.append(coords)
         self.winning_combinations = winning_combinations
+
     @staticmethod
     def get_new_coords(line: str, last_coords_data: list) -> list:
         new_coords_data = {"vertical": [last_coords_data[0], last_coords_data[1] + 1],
@@ -72,9 +74,9 @@ class WinningCombinationClass:
                                                                  coords_data=coords_data[0],
                                                                  combinations_qty=winning_combinations_qty)
         new_right_coords = self.create_new_diagonals_combinations(up_num=-1,
-                                                                 low_num=1,
-                                                                 coords_data=coords_data[1],
-                                                                 combinations_qty=winning_combinations_qty)
+                                                                  low_num=1,
+                                                                  coords_data=coords_data[1],
+                                                                  combinations_qty=winning_combinations_qty)
         return new_left_coords + new_right_coords
 
     @staticmethod
