@@ -1,20 +1,20 @@
 from helpers.info_messages import ENTER_CORRECT_COORDS_MESSAGE, CELL_IS_OCCUPIED_MESSAGE
-from helpers.variables import empty_field_vertical_line_template, \
-    filled_field_vertical_line_template, \
-    percent_nums_data, \
-    X_SYMBOL, \
-    O_SYMBOL
+from helpers.variables import (empty_field_vertical_line_template,
+                               filled_field_vertical_line_template,
+                               percent_nums_data,
+                               X_SYMBOL,
+                               O_SYMBOL)
 
 
 class Field:
+    field = None
+    filled_cells = {X_SYMBOL: [], O_SYMBOL: []}
+    free_symbol_controller = {X_SYMBOL: True, O_SYMBOL: True}
     def __init__(self, size: int) -> None:
         self.size = size
         self.last_col = size - 1
         self.percent_of_size_num = percent_nums_data.get(size)
         self.horizontal_lines_count = round(size + (size * (size * self.percent_of_size_num / 100)))
-        self.field = None
-        self.filled_cells = {X_SYMBOL: [], O_SYMBOL: []}
-        self.free_symbol_controller = {X_SYMBOL: True, O_SYMBOL: True}
 
     def add_user_coords(self, symbol: str, coords: str) -> str or None:
         user_coords = [int(data) for data in coords if data.isdigit()]
