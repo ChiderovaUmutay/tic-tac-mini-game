@@ -14,7 +14,7 @@ class Game:
     field = None
     checker = None
 
-    def run(self):
+    def run(self) -> None:
         while True:
             self.create_field_object()
             self.field.__str__()
@@ -31,12 +31,12 @@ class Game:
             answer = new_game_start_input()
             if not answer:
                 break
-    def create_field_object(self):
+    def create_field_object(self) -> None:
         field_size = user_field_size_choice_input()
         self.field = Field(size=field_size)
         self.field.create_field()
 
-    def create_checker_object(self):
+    def create_checker_object(self) -> None:
         self.checker = Checker(self.field)
         self.checker.get_winning_combination()
 
@@ -51,13 +51,13 @@ class Game:
         shuffle(players)
         return players
 
-    def create_player(self, player_class: [Player], bot=False):
+    def create_player(self, player_class: Player or Bot, bot=False) -> Player:
         player = player_class(filed_obj=self.field)
         player.create_name(bot=bot)
         player.choose_symbol(bot=bot)
         return player
 
-    def do_step(self, player):
+    def do_step(self, player: Player or Bot) -> bool:
         player.step()
         result = self.checker.checker(player=player)
         if result:
@@ -66,7 +66,7 @@ class Game:
         draw_result = self.checking_on_draw()
         return draw_result
 
-    def checking_on_draw(self):
+    def checking_on_draw(self) -> bool:
         filled_cells = self.field.get_filled_cells()
         if len(filled_cells) == (self.field.size * self.field.size):
             self.display(message=DRAW_RESULT_MESSAGE)
