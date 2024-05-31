@@ -1,15 +1,21 @@
 from filed_class import Field
-from helpers.info_messages import ENTER_COORDS_MESSAGE, \
-    CHOOSE_SYMBOL_MESSAGE, \
-    CHOOSE_CORRECT_SYMBOL_MESSAGE, \
-    SYMBOL_IS_OCCUPIED_MESSAGE
-from helpers.variables import X_SYMBOL, O_SYMBOL
+from helpers.info_messages import (ENTER_COORDS_MESSAGE,
+                                   CHOOSE_SYMBOL_MESSAGE,
+                                   CHOOSE_CORRECT_SYMBOL_MESSAGE,
+                                   SYMBOL_IS_OCCUPIED_MESSAGE,
+                                   ENTER_YOUR_NAME)
+from helpers.variables import X_SYMBOL, O_SYMBOL, BOT_NAME
 
 
 class Player:
+    symbol = None
+    name = None
+
     def __init__(self, filed_obj: Field):
         self.field = filed_obj
-        self.symbol = None
+
+    def create_name(self, bot=False):
+        self.name = input(ENTER_YOUR_NAME) if not bot else BOT_NAME
 
     def choose_symbol(self, bot=False) -> None:
         if not bot:
